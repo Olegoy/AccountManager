@@ -18,10 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-@Tag(name = "Владельцев счетов", description = "CRUD Владельцев счетов")
+@Tag(name = "Владельцы счетов", description = "CRUD Владельцев счетов")
 @RestController
 @RequestMapping("${project.uri}/owners")
 public class OwnerController {
@@ -36,20 +35,20 @@ public class OwnerController {
     @GetMapping("/")
     public ResponseEntity<List<OwnerResponseDto>> getOwners() {
 
-        List<OwnerResponseDto> results =  new ArrayList<>();
+        List<OwnerResponseDto> results =  ownerService.getAll();
         return ResponseEntity.ok().body(results);
     }
 
     @Operation(summary = "Получить владельца по id")
     @GetMapping("/{id}")
-    public ResponseEntity<OwnerResponseDto> getUserById(@PathVariable Long id) {
+    public ResponseEntity<OwnerResponseDto> getOwnerById(@PathVariable Long id) {
         OwnerResponseDto responseDto = ownerService.getById(id);
         return ResponseEntity.ok().body(responseDto);
     }
 
     @Operation(summary = "Добавить владельца")
     @PostMapping("/add/")
-    public ResponseEntity<OwnerResponseDto> addUser(@RequestBody OwnerRequestDto requestDto) {
+    public ResponseEntity<OwnerResponseDto> addOwner(@RequestBody OwnerRequestDto requestDto) {
         // добавление в БД
         OwnerResponseDto responseDto = ownerService.addOwner(requestDto);
 

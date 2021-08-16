@@ -8,11 +8,15 @@ import com.simbirsoft.yashkin.accountmanager.repository.AccountRepository;
 import com.simbirsoft.yashkin.accountmanager.repository.OwnerRepository;
 import com.simbirsoft.yashkin.accountmanager.rest.dto.AccountRequestDto;
 import com.simbirsoft.yashkin.accountmanager.rest.dto.AccountResponseDto;
+import com.simbirsoft.yashkin.accountmanager.rest.dto.OwnerResponseDto;
 import com.simbirsoft.yashkin.accountmanager.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -28,6 +32,17 @@ public class AccountServiceImpl implements AccountService {
         this.accountRepository = accountRepository;
         this.accountMapper = accountMapper;
         this.ownerRepository = ownerRepository;
+    }
+
+    @Override
+    public List<AccountResponseDto> getAll() {
+        List<AccountEntity> allAccountsEntity = accountRepository.findAll();
+        List<AccountResponseDto> allAccounts = allAccountsEntity.stream()
+                .map(accountMapper::accountResponseDtoFromAccountEntity)
+                .collect(Collectors.toList());
+
+        log.info("got all Accounts");
+        return allAccounts;
     }
 
     @Override

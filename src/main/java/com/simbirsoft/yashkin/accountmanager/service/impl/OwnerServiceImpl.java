@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Transactional
 @Service
 public class OwnerServiceImpl implements OwnerService {
@@ -24,6 +27,17 @@ public class OwnerServiceImpl implements OwnerService {
     public OwnerServiceImpl(OwnerRepository ownerRepository, OwnerMapper ownerMapper) {
         this.ownerRepository = ownerRepository;
         this.ownerMapper = ownerMapper;
+    }
+
+    @Override
+    public List<OwnerResponseDto> getAll() {
+        List<OwnerEntity> allOwnersEntity = ownerRepository.findAll();
+        List<OwnerResponseDto> allOwners = allOwnersEntity.stream()
+                .map(ownerMapper::ownerResponseDtoFromOwnerEntity)
+                .collect(Collectors.toList());
+
+        log.info("got all Owners");
+        return allOwners;
     }
 
     @Override

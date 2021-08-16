@@ -3,7 +3,11 @@ package com.simbirsoft.yashkin.accountmanager.service;
 import com.simbirsoft.yashkin.accountmanager.rest.dto.OwnerRequestDto;
 import com.simbirsoft.yashkin.accountmanager.rest.dto.OwnerResponseDto;
 
+import java.util.List;
+
 public interface OwnerService {
+
+    List<OwnerResponseDto> getAll();
 
     OwnerResponseDto getById(Long id);
 

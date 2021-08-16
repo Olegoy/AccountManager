@@ -14,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 public class OperationServiceImpl implements OperationService {
@@ -29,6 +32,17 @@ public class OperationServiceImpl implements OperationService {
         this.operationRepository = operationRepository;
         this.operationMapper = operationMapper;
         this.accountRepository = accountRepository;
+    }
+
+    @Override
+    public List<OperationResponseDto> getAll() {
+        List<OperationEntity> allOperationsEntity = operationRepository.findAll();
+        List<OperationResponseDto> allOperations = allOperationsEntity.stream()
+                .map(operationMapper::operationResponseDtoFromOperationEntity)
+                .collect(Collectors.toList());
+
+        log.info("got all Operations");
+        return allOperations;
     }
 
     @Override

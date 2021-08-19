@@ -9,8 +9,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
-    @Primary
+@Primary
     @Component
     public class ProjectManagerErrorDecoder implements ErrorDecoder {
 
@@ -20,7 +21,7 @@ import java.io.IOException;
         public Exception decode(String s, Response response) {
             ErrorMessage errorMessage;
             try {
-                errorMessage = objectMapper.readValue(response.body().asReader(), ErrorMessage.class);
+                errorMessage = objectMapper.readValue(response.body().asReader(Charset.defaultCharset()), ErrorMessage.class);
             } catch (IOException e) {
                 return new IOException(e);
             }

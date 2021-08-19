@@ -1,11 +1,6 @@
 package com.simbirsoft.yashkin.accountmanager.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "owner")
@@ -27,6 +22,9 @@ public class OwnerEntity {
     @Column(name = "last_name")
     private String lastName;
 
+//    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+//    private AccountEntity account;
+
     public OwnerEntity() {
     }
 
@@ -37,6 +35,8 @@ public class OwnerEntity {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+
+
 
     public Long getId() {
         return id;

@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,6 +60,7 @@ public class OperationServiceImpl implements OperationService {
     @Override
     public OperationResponseDto addOperation(OperationRequestDto operationRequestDto) {
         OperationEntity entity = operationMapper.operationEntityFromOperationRequestDto(operationRequestDto);
+        entity.setDate(LocalDateTime.now());
         operationRepository.save(entity);
 
         OperationResponseDto responseDto = operationMapper.operationResponseDtoFromOperationEntity(entity);
@@ -71,7 +73,7 @@ public class OperationServiceImpl implements OperationService {
         OperationEntity entity = operationRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(String.format("Operation with ID = %d not found", id))
         );
-        entity.setType(operationRequestDto.getType());
+        entity.setDescription(operationRequestDto.getDescription());
         entity.setOperationSum(operationRequestDto.getOperationSum());
         entity.setBalanceAfter(operationRequestDto.getBalanceAfter());
         AccountEntity accountEntity = accountRepository.getById(operationRequestDto.getId());

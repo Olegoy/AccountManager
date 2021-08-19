@@ -10,8 +10,8 @@ public class OperationRequestDto {
     @Schema(description = "ID операции счета")
     private Long id;
 
-    @Schema(description = "Тип операции")
-    private String type;
+    @Schema(description = "Описание операции")
+    private String description;
 
     @Schema(description = "Сумма операции")
     private Long operationSum;
@@ -25,8 +25,8 @@ public class OperationRequestDto {
     @Schema(description = "Счет")
     private AccountRequestDto account;
 
-    public OperationRequestDto(String type, Long operationSum, Long balanceAfter, LocalDateTime date, AccountRequestDto account) {
-        this.type = type;
+    public OperationRequestDto(String description, Long operationSum, Long balanceAfter, LocalDateTime date, AccountRequestDto account) {
+        this.description = description;
         this.operationSum = operationSum;
         this.balanceAfter = balanceAfter;
         this.date = date;
@@ -41,12 +41,12 @@ public class OperationRequestDto {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getDescription() {
+        return description;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getOperationSum() {

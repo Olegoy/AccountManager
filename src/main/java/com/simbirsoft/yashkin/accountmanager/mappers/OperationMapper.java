@@ -15,7 +15,4 @@ public interface OperationMapper {
 
     OperationResponseDto operationResponseDtoFromOperationEntity(OperationEntity operationEntity);
 
-    void updateOperationEntityFromOperationRequestDto(OperationRequestDto operationRequestDto, @MappingTarget OperationEntity operationEntity);
-
-    void updateOperationResponseDtoFromOperationEntity(OperationEntity operationEntity, @MappingTarget OperationResponseDto operationResponseDto);
 }

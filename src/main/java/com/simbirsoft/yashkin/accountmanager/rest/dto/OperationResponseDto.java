@@ -1,6 +1,5 @@
 package com.simbirsoft.yashkin.accountmanager.rest.dto;
 
-import com.simbirsoft.yashkin.accountmanager.entity.AccountEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
@@ -11,8 +10,8 @@ public class OperationResponseDto {
     @Schema(description = "ID операции счета")
     private Long id;
 
-    @Schema(description = "Тип операции")
-    private String type;
+    @Schema(description = "Описание операции")
+    private String description;
 
     @Schema(description = "Сумма операции")
     private Long operationSum;
@@ -24,15 +23,15 @@ public class OperationResponseDto {
     private LocalDateTime date;
 
     @Schema(description = "Счет")
-    private AccountResponseDto accountEntity;
+    private AccountResponseDto account;
 
-    public OperationResponseDto(Long id, String type, Long operationSum, Long balanceAfter, LocalDateTime date, AccountResponseDto accountEntity) {
+    public OperationResponseDto(Long id, String description, Long operationSum, Long balanceAfter, LocalDateTime date, AccountResponseDto account) {
         this.id = id;
-        this.type = type;
+        this.description = description;
         this.operationSum = operationSum;
         this.balanceAfter = balanceAfter;
         this.date = date;
-        this.accountEntity = accountEntity;
+        this.account = account;
     }
 
     public Long getId() {
@@ -43,12 +42,12 @@ public class OperationResponseDto {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getDescription() {
+        return description;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getOperationSum() {
@@ -75,11 +74,11 @@ public class OperationResponseDto {
         this.date = date;
     }
 
-    public AccountResponseDto getAccountEntity() {
-        return accountEntity;
+    public AccountResponseDto getAccount() {
+        return account;
     }
 
-    public void setAccountEntity(AccountResponseDto accountEntity) {
-        this.accountEntity = accountEntity;
+    public void setAccount(AccountResponseDto account) {
+        this.account = account;
     }
 }

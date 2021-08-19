@@ -8,6 +8,7 @@ import java.util.List;
 public interface AccountService {
 
     List<AccountResponseDto> getAll();
+
     AccountResponseDto getById(Long id);
 
     AccountResponseDto addAccount(AccountRequestDto accountRequestDto);
@@ -15,4 +16,9 @@ public interface AccountService {
     AccountResponseDto updateAccount(Long id, AccountRequestDto accountRequestDto);
 
     AccountResponseDto deleteAccount(Long id);
+
+    AccountResponseDto depositAccount(Long id, Long sum);
+
+    AccountResponseDto withdrawAccount(Long id, Long sum, String descripion);
+
 }

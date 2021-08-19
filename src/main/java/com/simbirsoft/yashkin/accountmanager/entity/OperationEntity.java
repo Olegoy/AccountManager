@@ -11,15 +11,15 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "history_operation")
+@Table(name = "operations")
 public class OperationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "type")
-    private String type;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "operation_sum")
     private Long operationSum;
@@ -36,9 +36,9 @@ public class OperationEntity {
     public OperationEntity() {
     }
 
-    public OperationEntity(Long id, String type, Long operationSum, Long balanceAfter, LocalDateTime date, AccountEntity account) {
+    public OperationEntity(Long id, String description, Long operationSum, Long balanceAfter, LocalDateTime date, AccountEntity account) {
         this.id = id;
-        this.type = type;
+        this.description = description;
         this.operationSum = operationSum;
         this.balanceAfter = balanceAfter;
         this.date = date;
@@ -53,12 +53,12 @@ public class OperationEntity {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getDescription() {
+        return description;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getOperationSum() {

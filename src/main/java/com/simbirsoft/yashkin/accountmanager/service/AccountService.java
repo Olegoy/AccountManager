@@ -17,7 +17,7 @@ public interface AccountService {
 
     AccountResponseDto deleteAccount(Long id);
 
-    AccountResponseDto depositAccount(Long id, Long sum);
+    AccountResponseDto depositInAccount(Long id, Long sum);
 
     AccountResponseDto withdrawAccount(Long id, Long sum, String descripion);
 

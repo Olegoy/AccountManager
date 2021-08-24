@@ -38,6 +38,7 @@ public class AccountServiceImpl implements AccountService {
         this.operationRepository = operationRepository;
     }
 
+    @Transactional
     @Override
     public List<AccountResponseDto> getAll() {
         List<AccountEntity> allAccountsEntity = accountRepository.findAll();
@@ -49,6 +50,7 @@ public class AccountServiceImpl implements AccountService {
         return allAccounts;
     }
 
+    @Transactional
     @Override
     public AccountResponseDto getById(Long id) {
         AccountEntity entity = accountRepository.findById(id).orElseThrow(
@@ -60,6 +62,7 @@ public class AccountServiceImpl implements AccountService {
         return responseDto;
     }
 
+    @Transactional
     @Override
     public AccountResponseDto addAccount(AccountRequestDto accountRequestDto) {
         AccountEntity entity = accountMapper.accountEntityFromAccountRequestDto(accountRequestDto);
@@ -70,6 +73,7 @@ public class AccountServiceImpl implements AccountService {
         return responseDto;
     }
 
+    @Transactional
     @Override
     public AccountResponseDto updateAccount(Long id, AccountRequestDto accountRequestDto) {
         AccountEntity entity = accountRepository.findById(id).orElseThrow(
@@ -84,6 +88,7 @@ public class AccountServiceImpl implements AccountService {
         return responseDto;
     }
 
+    @Transactional
     @Override
     public AccountResponseDto deleteAccount(Long id) {
         AccountEntity entity = accountRepository.findById(id).orElseThrow(
@@ -95,8 +100,9 @@ public class AccountServiceImpl implements AccountService {
         return responseDto;
     }
 
+    @Transactional
     @Override
-    public AccountResponseDto depositAccount(Long id, Long sum) {
+    public AccountResponseDto depositInAccount(Long id, Long sum) {
         AccountEntity entity = accountRepository.getById(id);
         entity.setAmount(entity.getAmount() + sum);
         AccountResponseDto responseDto = accountMapper.accountResponseDtoFromAccountEntity(entity);
@@ -110,6 +116,7 @@ public class AccountServiceImpl implements AccountService {
         return responseDto;
     }
 
+    @Transactional
     @Override
     public AccountResponseDto withdrawAccount(Long id, Long sum, String description) {
         AccountEntity entity = accountRepository.getById(id);

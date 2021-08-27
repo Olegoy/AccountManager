@@ -5,6 +5,7 @@ import com.simbirsoft.yashkin.accountmanager.rest.dto.OperationResponseDto;
 import com.simbirsoft.yashkin.accountmanager.rest.dto.OwnerResponseDto;
 import com.simbirsoft.yashkin.accountmanager.service.OperationService;
 import com.simbirsoft.yashkin.accountmanager.service.OwnerService;
+import com.simbirsoft.yashkin.accountmanager.util.Owners;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -46,9 +47,9 @@ public class OperationController {
     }
 
     @Operation(summary = "Проверка наличия операции по имени владельца счета и описанию")
-    @GetMapping("/check/")
+    @PostMapping("/check/")
     public ResponseEntity<Boolean> checkOperationByOwners(@RequestParam("ownerName") String ownerName, @RequestParam("description") String description) {
-        Optional<OwnerResponseDto> ownerResponseDto = ownerService.getAll().stream().filter(owner -> (owner.getFirstName() + owner.getLastName()).equals(ownerName.replaceAll(" ", ""))).findFirst();
+        Optional<OwnerResponseDto> ownerResponseDto = ownerService.getAll().stream().filter(owner -> (Owners.getFullName(owner.getFirstName(), owner.getLastName()).equals(Owners.getFullName(ownerName)))).findFirst();
         List<OperationResponseDto> results = new ArrayList<>();
         boolean isOperationExist = false;
         if (ownerResponseDto.isPresent()) {

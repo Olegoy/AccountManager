@@ -1,0 +1,39 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 000001-create-table-owner
+      author: Oleg Yashkin
+      changes:
+        - createTable:
+            tableName: owner
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: login, type: VARCHAR(255), constraints: { nullable: false } }
+              - column: { name: password, type: VARCHAR(255), constraints: { nullable: false } }
+              - column: { name: first_name, type: VARCHAR(255), constraints: { nullable: false } }
+              - column: { name: last_name, type: VARCHAR(255), constraints: { nullable: false } }
+
+  - changeSet:
+      id: 000002-create-table-account
+      author: Oleg Yashkin
+      changes:
+        - createTable:
+            tableName: account
+            columns:
+              - column: { name: number, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: amount, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: id, type: BIGINT, constraints: { nullable: false, primaryKey: true , foreignKeyName: fk_account_owner, references: owner(id) } }
+
+  - changeSet:
+      id: 000003-create-table-operations
+      author: Oleg Yashkin
+      changes:
+        - createTable:
+            tableName: operations
+            columns:
+              - column: { name: id, type: BIGINT, autoIncrement: true, constraints: { primaryKey: true } }
+              - column: { name: description, type: VARCHAR(255), constraints: { nullable: false } }
+              - column: { name: operation_sum, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: balance_after, type: BIGINT, constraints: { nullable: false } }
+              - column: { name: date, type: TIMESTAMP, constraints: { nullable: false} }
+              - column: { name: account_id, type: BIGINT, constraints: { nullable: false, foreignKeyName: fk_operations_account, references: account(id) } }

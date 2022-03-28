@@ -1,5 +1,6 @@
 package com.simbirsoft.yashkin.accountmanager.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
@@ -7,6 +8,7 @@ import java.time.LocalDateTime;
 @Schema(description = "Операция счета")
 public class OperationRequestDto {
 
+    @JsonIgnore
     @Schema(description = "ID операции счета")
     private Long id;
 

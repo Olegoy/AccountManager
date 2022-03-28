@@ -1,5 +1,6 @@
 package com.simbirsoft.yashkin.accountmanager.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Счет")

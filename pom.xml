@@ -49,6 +49,12 @@
             <version>2.1.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.5.2</version>
+        </dependency>
+
         <!-- jpa, crud repository -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component;
 public interface AccountMapper {
 
     AccountEntity accountEntityFromAccountRequestDto(AccountRequestDto accountRequestDto);
-
+    AccountEntity accountEntityFromAccountResponseDto(AccountResponseDto accountResponseDto);
+    AccountRequestDto accountRequestDtoFromAccountEntity(AccountEntity accountEntity);
     AccountResponseDto accountResponseDtoFromAccountEntity(AccountEntity accountEntity);
 
 }

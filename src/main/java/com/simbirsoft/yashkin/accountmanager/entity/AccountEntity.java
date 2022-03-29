@@ -1,42 +1,38 @@
 package com.simbirsoft.yashkin.accountmanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "account")
 public class AccountEntity {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "number")
     private Long number;
 
     @Column(name = "amount")
     private Long amount;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "id")
-    private OwnerEntity owner;
+    @JsonIgnore
+    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })
+    @JoinColumn(name = "account_number")
+    private List<OperationEntity> operations;
 
     public AccountEntity() {
     }
 
-    public AccountEntity(Long id, Long number, Long amount, OwnerEntity owner) {
-        this.id = id;
+    public AccountEntity(Long number, Long amount) {
         this.number = number;
         this.amount = amount;
-        this.owner = owner;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public AccountEntity(Long number, Long amount, List<OperationEntity> operations) {
+        this.number = number;
+        this.amount = amount;
+        this.operations = operations;
     }
 
     public Long getNumber() {
@@ -55,11 +51,11 @@ public class AccountEntity {
         this.amount = amount;
     }
 
-    public OwnerEntity getOwner() {
-        return owner;
+    public List<OperationEntity> getOperations() {
+        return operations;
     }
 
-    public void setOwner(OwnerEntity owner) {
-        this.owner = owner;
+    public void setOperations(List<OperationEntity> operations) {
+        this.operations = operations;
     }
 }

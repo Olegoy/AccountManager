@@ -1,13 +1,6 @@
 package com.simbirsoft.yashkin.accountmanager.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,20 +23,41 @@ public class OperationEntity {
     @Column(name = "date")
     private LocalDateTime date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private AccountEntity account;
+    @Column(name = "account_number")
+    private Long accountNumber;
+
+//    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH })
+//    @JoinColumn(name = "account_number")
+//    private AccountEntity accountEntity;
 
     public OperationEntity() {
     }
 
-    public OperationEntity(Long id, String description, Long operationSum, Long balanceAfter, LocalDateTime date, AccountEntity account) {
+    public OperationEntity(Long id, String description, Long operationSum, Long balanceAfter, LocalDateTime date) {
         this.id = id;
         this.description = description;
         this.operationSum = operationSum;
         this.balanceAfter = balanceAfter;
         this.date = date;
-        this.account = account;
     }
+
+    public OperationEntity(Long id, String description, Long operationSum, Long balanceAfter, LocalDateTime date, Long accountNumber) {
+        this.id = id;
+        this.description = description;
+        this.operationSum = operationSum;
+        this.balanceAfter = balanceAfter;
+        this.date = date;
+        this.accountNumber = accountNumber;
+    }
+
+    //    public OperationEntity(Long id, String description, Long operationSum, Long balanceAfter, LocalDateTime date, AccountEntity accountEntity) {
+//        this.id = id;
+//        this.description = description;
+//        this.operationSum = operationSum;
+//        this.balanceAfter = balanceAfter;
+//        this.date = date;
+//        this.accountEntity = accountEntity;
+//    }
 
     public Long getId() {
         return id;
@@ -85,11 +99,20 @@ public class OperationEntity {
         this.date = date;
     }
 
-    public AccountEntity getAccount() {
-        return account;
+    public Long getAccountNumber() {
+        return accountNumber;
     }
 
-    public void setAccount(AccountEntity account) {
-        this.account = account;
+    public void setAccountNumber(Long accountNumber) {
+        this.accountNumber = accountNumber;
     }
+
+    //    public AccountEntity getAccountEntity() {
+//        return accountEntity;
+//    }
+//
+//    public void setAccountEntity(AccountEntity accountEntity) {
+//        this.accountEntity = accountEntity;
+//    }
+//
 }

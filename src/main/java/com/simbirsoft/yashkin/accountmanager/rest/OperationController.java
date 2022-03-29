@@ -1,8 +1,12 @@
 package com.simbirsoft.yashkin.accountmanager.rest;
 
+import com.simbirsoft.yashkin.accountmanager.entity.AccountEntity;
+import com.simbirsoft.yashkin.accountmanager.entity.OperationEntity;
+import com.simbirsoft.yashkin.accountmanager.mappers.AccountMapper;
 import com.simbirsoft.yashkin.accountmanager.rest.dto.OperationRequestDto;
 import com.simbirsoft.yashkin.accountmanager.rest.dto.OperationResponseDto;
 import com.simbirsoft.yashkin.accountmanager.rest.dto.OwnerResponseDto;
+import com.simbirsoft.yashkin.accountmanager.service.AccountService;
 import com.simbirsoft.yashkin.accountmanager.service.OperationService;
 import com.simbirsoft.yashkin.accountmanager.service.OwnerService;
 import com.simbirsoft.yashkin.accountmanager.util.Owners;
@@ -25,10 +29,14 @@ public class OperationController {
 
     private final OperationService operationService;
     private final OwnerService ownerService;
+    private final AccountService accountService;
+    private final AccountMapper accountMapper;
 
-    public OperationController(OperationService operationService, OwnerService ownerService) {
+    public OperationController(OperationService operationService, OwnerService ownerService, AccountService accountService, AccountMapper accountMapper) {
         this.operationService = operationService;
         this.ownerService = ownerService;
+        this.accountService = accountService;
+        this.accountMapper = accountMapper;
     }
 
     @Operation(summary = "Получить список операций")
@@ -50,13 +58,14 @@ public class OperationController {
     @PostMapping("/check/")
     public ResponseEntity<Boolean> checkOperationByOwners(@RequestParam("ownerName") String ownerName, @RequestParam("description") String description) {
         Optional<OwnerResponseDto> ownerResponseDto = ownerService.getAll().stream().filter(owner -> (Owners.getFullName(owner.getFirstName(), owner.getLastName()).equals(Owners.getFullName(ownerName)))).findFirst();
-        List<OperationResponseDto> results = new ArrayList<>();
         boolean isOperationExist = false;
         if (ownerResponseDto.isPresent()) {
-            Long ownerId = ownerResponseDto.get().getId();
-            Optional<OperationResponseDto> operationResponseDto = operationService.getAll().stream().filter(operation -> operation.getAccount().getId() == ownerId).filter(operation -> operation.getDescription().equalsIgnoreCase(description)).findFirst();
-            if (operationResponseDto.isPresent()) {
-                isOperationExist = true;
+            AccountEntity accountEntity = ownerResponseDto.get().getAccount();
+            if (!accountEntity.getOperations().isEmpty()) {
+                List<OperationEntity> operations = accountEntity.getOperations().stream().filter(operation -> operation.getDescription().equalsIgnoreCase(description)).collect(Collectors.toList());
+                if (!operations.isEmpty()) {
+                    isOperationExist = true;
+                }
             }
         }
         return ResponseEntity.ok().body(isOperationExist);

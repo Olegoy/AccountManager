@@ -3,11 +3,14 @@ package com.simbirsoft.yashkin.accountmanager.service.impl;
 import com.simbirsoft.yashkin.accountmanager.entity.AccountEntity;
 import com.simbirsoft.yashkin.accountmanager.entity.OperationEntity;
 import com.simbirsoft.yashkin.accountmanager.exception.NotFoundException;
+import com.simbirsoft.yashkin.accountmanager.mappers.AccountMapper;
 import com.simbirsoft.yashkin.accountmanager.mappers.OperationMapper;
 import com.simbirsoft.yashkin.accountmanager.repository.AccountRepository;
 import com.simbirsoft.yashkin.accountmanager.repository.OperationRepository;
+import com.simbirsoft.yashkin.accountmanager.rest.dto.AccountRequestDto;
 import com.simbirsoft.yashkin.accountmanager.rest.dto.OperationRequestDto;
 import com.simbirsoft.yashkin.accountmanager.rest.dto.OperationResponseDto;
+import com.simbirsoft.yashkin.accountmanager.service.AccountService;
 import com.simbirsoft.yashkin.accountmanager.service.OperationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +31,15 @@ public class OperationServiceImpl implements OperationService {
     private final OperationRepository operationRepository;
     private final OperationMapper operationMapper;
     private final AccountRepository accountRepository;
+    private final AccountService accountService;
+    private final AccountMapper accountMapper;
 
-    public OperationServiceImpl(OperationRepository operationRepository, OperationMapper operationMapper, AccountRepository accountRepository) {
+    public OperationServiceImpl(OperationRepository operationRepository, OperationMapper operationMapper, AccountRepository accountRepository, AccountService accountService, AccountMapper accountMapper) {
         this.operationRepository = operationRepository;
         this.operationMapper = operationMapper;
         this.accountRepository = accountRepository;
+        this.accountService = accountService;
+        this.accountMapper = accountMapper;
     }
 
     @Override
@@ -61,6 +68,15 @@ public class OperationServiceImpl implements OperationService {
     public OperationResponseDto addOperation(OperationRequestDto operationRequestDto) {
         OperationEntity entity = operationMapper.operationEntityFromOperationRequestDto(operationRequestDto);
         entity.setDate(LocalDateTime.now());
+        AccountEntity accountEntity = accountMapper.accountEntityFromAccountResponseDto(accountService.getById(operationRequestDto.getAccountNumber()));
+        if (accountEntity.getAmount() - operationRequestDto.getOperationSum() >= 0) {
+            accountService.updateAccount(new AccountRequestDto(operationRequestDto.getAccountNumber()
+                    , accountEntity.getAmount() - operationRequestDto.getOperationSum()
+            ));
+        } else {
+            throw new NotFoundException("Недостаточно средств");
+        }
+        entity.setBalanceAfter(accountEntity.getAmount() - operationRequestDto.getOperationSum());
         operationRepository.save(entity);
 
         OperationResponseDto responseDto = operationMapper.operationResponseDtoFromOperationEntity(entity);
@@ -77,7 +93,7 @@ public class OperationServiceImpl implements OperationService {
         entity.setOperationSum(operationRequestDto.getOperationSum());
         entity.setBalanceAfter(operationRequestDto.getBalanceAfter());
         AccountEntity accountEntity = accountRepository.getById(operationRequestDto.getId());
-        entity.setAccount(accountEntity);
+//        entity.setAccount(accountEntity);
         OperationResponseDto responseDto = operationMapper.operationResponseDtoFromOperationEntity(entity);
         log.info("Operation updated");
         return responseDto;

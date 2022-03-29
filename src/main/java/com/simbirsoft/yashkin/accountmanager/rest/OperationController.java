@@ -9,6 +9,7 @@ import com.simbirsoft.yashkin.accountmanager.rest.dto.OwnerResponseDto;
 import com.simbirsoft.yashkin.accountmanager.service.AccountService;
 import com.simbirsoft.yashkin.accountmanager.service.OperationService;
 import com.simbirsoft.yashkin.accountmanager.service.OwnerService;
+import com.simbirsoft.yashkin.accountmanager.service.kafka.Producer;
 import com.simbirsoft.yashkin.accountmanager.util.Owners;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -31,12 +31,14 @@ public class OperationController {
     private final OwnerService ownerService;
     private final AccountService accountService;
     private final AccountMapper accountMapper;
+    private final Producer producer;
 
-    public OperationController(OperationService operationService, OwnerService ownerService, AccountService accountService, AccountMapper accountMapper) {
+    public OperationController(OperationService operationService, OwnerService ownerService, AccountService accountService, AccountMapper accountMapper, Producer producer) {
         this.operationService = operationService;
         this.ownerService = ownerService;
         this.accountService = accountService;
         this.accountMapper = accountMapper;
+        this.producer = producer;
     }
 
     @Operation(summary = "Получить список операций")
@@ -76,7 +78,7 @@ public class OperationController {
     public ResponseEntity<OperationResponseDto> addOperation(@RequestBody OperationRequestDto requestDto) {
         // добавление в БД
         OperationResponseDto responseDto = operationService.addOperation(requestDto);
-
+        producer.sendProjectsMessage(requestDto.getDescription());
         return ResponseEntity.ok().body(responseDto);
     }
 

@@ -12,6 +12,7 @@ import com.simbirsoft.yashkin.accountmanager.rest.dto.OperationRequestDto;
 import com.simbirsoft.yashkin.accountmanager.rest.dto.OperationResponseDto;
 import com.simbirsoft.yashkin.accountmanager.service.AccountService;
 import com.simbirsoft.yashkin.accountmanager.service.OperationService;
+import com.simbirsoft.yashkin.accountmanager.service.kafka.Producer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

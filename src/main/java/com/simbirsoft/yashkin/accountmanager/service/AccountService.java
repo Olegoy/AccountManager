@@ -13,7 +13,7 @@ public interface AccountService {
 
     AccountResponseDto addAccount(AccountRequestDto accountRequestDto);
 
-    AccountResponseDto updateAccount(Long id, AccountRequestDto accountRequestDto);
+    AccountResponseDto updateAccount(AccountRequestDto accountRequestDto);
 
     AccountResponseDto deleteAccount(Long id);
 

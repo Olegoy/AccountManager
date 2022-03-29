@@ -22,8 +22,9 @@ public class OwnerEntity {
     @Column(name = "last_name")
     private String lastName;
 
-//    @OneToOne(mappedBy = "owner", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
-//    private AccountEntity account;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_number")
+    private AccountEntity account;
 
     public OwnerEntity() {
     }
@@ -36,7 +37,14 @@ public class OwnerEntity {
         this.lastName = lastName;
     }
 
-
+    public OwnerEntity(Long id, String login, String password, String firstName, String lastName, AccountEntity account) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.account = account;
+    }
 
     public Long getId() {
         return id;
@@ -78,4 +86,11 @@ public class OwnerEntity {
         this.lastName = lastName;
     }
 
+    public AccountEntity getAccount() {
+        return account;
+    }
+
+    public void setAccount(AccountEntity account) {
+        this.account = account;
+    }
 }

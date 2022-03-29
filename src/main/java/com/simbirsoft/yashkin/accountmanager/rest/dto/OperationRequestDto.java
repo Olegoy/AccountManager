@@ -18,6 +18,7 @@ public class OperationRequestDto {
     @Schema(description = "Сумма операции")
     private Long operationSum;
 
+    @JsonIgnore
     @Schema(description = "Баланс счета после операции")
     private Long balanceAfter;
 
@@ -25,14 +26,18 @@ public class OperationRequestDto {
     private LocalDateTime date;
 
     @Schema(description = "Счет")
-    private AccountRequestDto account;
+    private Long accountNumber;
 
-    public OperationRequestDto(String description, Long operationSum, Long balanceAfter, LocalDateTime date, AccountRequestDto account) {
+    public OperationRequestDto() {
+    }
+
+    public OperationRequestDto(Long id, String description, Long operationSum, Long balanceAfter, LocalDateTime date, Long accountNumber) {
+        this.id = id;
         this.description = description;
         this.operationSum = operationSum;
         this.balanceAfter = balanceAfter;
         this.date = date;
-        this.account = account;
+        this.accountNumber = accountNumber;
     }
 
     public Long getId() {
@@ -75,11 +80,11 @@ public class OperationRequestDto {
         this.date = date;
     }
 
-    public AccountRequestDto getAccount() {
-        return account;
+    public Long getAccountNumber() {
+        return accountNumber;
     }
 
-    public void setAccount(AccountRequestDto account) {
-        this.account = account;
+    public void setAccountNumber(Long accountNumber) {
+        this.accountNumber = accountNumber;
     }
 }

@@ -2,7 +2,6 @@ package com.simbirsoft.yashkin.accountmanager.service.impl;
 
 import com.simbirsoft.yashkin.accountmanager.entity.AccountEntity;
 import com.simbirsoft.yashkin.accountmanager.entity.OperationEntity;
-import com.simbirsoft.yashkin.accountmanager.entity.OwnerEntity;
 import com.simbirsoft.yashkin.accountmanager.exception.NotFoundException;
 import com.simbirsoft.yashkin.accountmanager.mappers.AccountMapper;
 import com.simbirsoft.yashkin.accountmanager.repository.AccountRepository;
@@ -75,14 +74,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Transactional
     @Override
-    public AccountResponseDto updateAccount(Long id, AccountRequestDto accountRequestDto) {
-        AccountEntity entity = accountRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("Account with ID = %d not found", id))
+    public AccountResponseDto updateAccount(AccountRequestDto accountRequestDto) {
+        AccountEntity entity = accountRepository.findById(accountRequestDto.getNumber()).orElseThrow(
+                () -> new NotFoundException(String.format("Account with ID = %d not found", accountRequestDto.getNumber()))
         );
         entity.setNumber(accountRequestDto.getNumber());
         entity.setAmount(accountRequestDto.getAmount());
-        OwnerEntity owner = ownerRepository.getById(accountRequestDto.getId());
-        entity.setOwner(owner);
         AccountResponseDto responseDto = accountMapper.accountResponseDtoFromAccountEntity(entity);
         log.info("Account updated");
         return responseDto;
@@ -111,7 +108,7 @@ public class AccountServiceImpl implements AccountService {
         operation.setBalanceAfter(entity.getAmount());
         operation.setDescription("Deposit");
         operation.setDate(LocalDateTime.now());
-        operation.setAccount(entity);
+//        operation.setAccount(entity);
         operationRepository.save(operation);
         return responseDto;
     }
@@ -127,7 +124,6 @@ public class AccountServiceImpl implements AccountService {
         operation.setBalanceAfter(entity.getAmount());
         operation.setDescription(String.format("Debit. %s", description));
         operation.setDate(LocalDateTime.now());
-        operation.setAccount(entity);
         operationRepository.save(operation);
         return responseDto;
     }

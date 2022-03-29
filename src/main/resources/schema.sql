@@ -1,1 +1,1 @@
-create schema if not exists account_db;
+create schema if not exists public;

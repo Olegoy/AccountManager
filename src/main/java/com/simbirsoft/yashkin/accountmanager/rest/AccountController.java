@@ -56,11 +56,10 @@ public class AccountController {
     }
 
     @Operation(summary = "Обновление счета")
-    @PutMapping("/update/{id}")
-    public ResponseEntity<AccountResponseDto> updateAccount(@PathVariable Long id,
-                                                        @RequestBody AccountRequestDto requestDto) throws IOException {
+    @PutMapping("/update/")
+    public ResponseEntity<AccountResponseDto> updateAccount(@RequestBody AccountRequestDto requestDto) throws IOException {
         // обновление сущности в БД
-        AccountResponseDto responseDto = accountService.updateAccount(id, requestDto);
+        AccountResponseDto responseDto = accountService.updateAccount(requestDto);
 
         return ResponseEntity.ok().body(responseDto);
     }

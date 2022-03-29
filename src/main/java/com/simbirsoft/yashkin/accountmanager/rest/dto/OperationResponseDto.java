@@ -1,5 +1,6 @@
 package com.simbirsoft.yashkin.accountmanager.rest.dto;
 
+import com.simbirsoft.yashkin.accountmanager.entity.AccountEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
@@ -23,15 +24,28 @@ public class OperationResponseDto {
     private LocalDateTime date;
 
     @Schema(description = "Счет")
-    private AccountResponseDto account;
+    private Long accountNumber;
 
-    public OperationResponseDto(Long id, String description, Long operationSum, Long balanceAfter, LocalDateTime date, AccountResponseDto account) {
+    public OperationResponseDto() {
+    }
+
+//    public OperationResponseDto(Long id, String description, Long operationSum, Long balanceAfter, LocalDateTime date, AccountEntity account) {
+//        this.id = id;
+//        this.description = description;
+//        this.operationSum = operationSum;
+//        this.balanceAfter = balanceAfter;
+//        this.date = date;
+//        this.account = account;
+//    }
+
+
+    public OperationResponseDto(Long id, String description, Long operationSum, Long balanceAfter, LocalDateTime date, Long accountNumber) {
         this.id = id;
         this.description = description;
         this.operationSum = operationSum;
         this.balanceAfter = balanceAfter;
         this.date = date;
-        this.account = account;
+        this.accountNumber = accountNumber;
     }
 
     public Long getId() {
@@ -74,11 +88,11 @@ public class OperationResponseDto {
         this.date = date;
     }
 
-    public AccountResponseDto getAccount() {
-        return account;
+    public Long getAccountNumber() {
+        return accountNumber;
     }
 
-    public void setAccount(AccountResponseDto account) {
-        this.account = account;
+    public void setAccountNumber(Long accountNumber) {
+        this.accountNumber = accountNumber;
     }
 }
